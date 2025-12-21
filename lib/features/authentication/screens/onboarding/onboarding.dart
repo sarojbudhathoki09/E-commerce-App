@@ -1,25 +1,28 @@
 import 'package:e_commerce/features/authentication/screens/onboarding/widgets/onboarding_dot_navigation.dart';
+import 'package:e_commerce/features/authentication/screens/onboarding/widgets/onboarding_next_button.dart';
 import 'package:e_commerce/features/authentication/screens/onboarding/widgets/onboarding_page.dart';
 import 'package:e_commerce/features/authentication/screens/onboarding/widgets/onboarding_skip.dart';
-import 'package:e_commerce/utils/constant/colors.dart';
 import 'package:e_commerce/utils/constant/image_strings.dart';
 import 'package:e_commerce/utils/constant/text_strings.dart';
-import 'package:e_commerce/utils/device/device_utility.dart';
-import 'package:e_commerce/utils/helpers/helper_functions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../../utils/constant/sizes.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import '../../controllers/onboarding/onboarding_controller.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OnBoardingController());
+
     return Scaffold(
       body: Stack(
         children: [
           /// Horizontal Scrollable Pages
           PageView(
+            controller: controller.pageController,
+            onPageChanged: controller.updatePageIndicator,
             children: const [
               OnBoardingPage(
                 image: TImages.onBoardingImage1,
@@ -46,32 +49,14 @@ class OnBoardingScreen extends StatelessWidget {
           const OnBoardingDotNavigation(),
 
           /// Circular Button
-          OnBoardingNextButton()
+          const OnBoardingNextButton()
         ],
       ),
     );
   }
 }
 
-class OnBoardingNextButton extends StatelessWidget {
-  const OnBoardingNextButton({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    final dark = THelperFunctions.isDarkMode(context);
-    return Positioned(
-        right: TSizes.defaultSpace,
-        bottom: TDeviceUtils.getBottomNavigationBarHeight(),
-        child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(shape: CircleBorder(), backgroundColor: dark ? TColors.primary : Colors.black ),
-            child: Icon(CupertinoIcons.right_chevron),
-        )
-    );
-  }
-}
 
 
 
